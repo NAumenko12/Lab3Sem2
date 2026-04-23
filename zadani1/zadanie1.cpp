@@ -5,7 +5,6 @@
 using namespace std;
 
 double f(double x);
-
 double leftLine(double x);
 double leftSemicircle(double x);
 double logFunction(double x);
@@ -37,7 +36,7 @@ double f(double x) {
     else if (x <= -2) {
         return leftSemicircle(x);
     }
-    else if (x < 2) {
+    else if (x <= 2) {
         return logFunction(x);
     }
     else if (x <= 4) {
@@ -53,7 +52,7 @@ double leftLine(double x) {
 }
 
 double leftSemicircle(double x) {
-    return -4 + sqrt(4 - pow(x + 2, 2));
+    return -2 + sqrt(4 - pow(x + 4, 2));
 }
 
 double logFunction(double x) {

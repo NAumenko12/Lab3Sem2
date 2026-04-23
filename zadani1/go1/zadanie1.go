@@ -22,7 +22,7 @@ func f(x float64) float64 {
 		return leftLine(x)
 	} else if x <= -2 {
 		return leftSemicircle(x)
-	} else if x < 2 {
+	} else if x <= 2 {
 		return logFunction(x)
 	} else if x <= 4 {
 		return rightSemicircle(x)
@@ -36,7 +36,7 @@ func leftLine(x float64) float64 {
 }
 
 func leftSemicircle(x float64) float64 {
-	return -4 + math.Sqrt(4-math.Pow(x+2, 2))
+	return -2 + math.Sqrt(4-math.Pow(x+4, 2))
 }
 
 func logFunction(x float64) float64 {

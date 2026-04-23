@@ -1,50 +1,51 @@
 #include <iostream>
 #include <vector>
+#include <cstdint>
+
 using namespace std;
 
-long long gcd(long long a, long long b);
-vector<long long> euler(int a);
-long long polyEval(const vector<long long>& coeff, int b);
-long long denPow(int b, int a);
-pair<long long, long long> sum(int a, int b);
+int64_t gcd(int64_t a, int64_t b);
+vector<int64_t> euler(int a);
+int64_t polyEval(const vector<int64_t>& coeff, int b);
+int64_t denPow(int b, int a);
+pair<int64_t, int64_t> sum(int a, int b);
 
 int main() {
     int a, b;
     cin >> a >> b;
-
     if (b == 1) {
         cout << "infinity\n";
-    } else {
-        auto [num, den] = sum(a, b);
-        cout << num << "/" << den << endl;
+    } else{
+        pair<int64_t, int64_t> result = sum(a, b);
+        cout << result.first << "/" << result.second << endl;
     }
     return 0;
 }
 
-long long gcd(long long a, long long b) {
+int64_t gcd(int64_t a, int64_t b) { 
     while (b != 0) {
-        long long temp = a % b;
+        int64_t temp = a % b;
         a = b;
         b = temp;
     }
     return a;
 }
 
-vector<long long> euler(int a) {
-    vector<long long> prev = {1};
+vector<int64_t> euler(int a) { 
+    vector<int64_t> prev = {1};
     for (int n = 2; n <= a; ++n) {
-        vector<long long> cur(n, 1);
-        for (int k = 1; k < n - 1; ++k) {
-            cur[k] = (k + 1) * prev[k] + (n - k) * prev[k - 1];
+        vector<int64_t> cur(n, 1);
+        for (int k = 1; k < n - 1; ++k){
+            cur[k] = (k + 1) * prev[k] + (n - k) * prev[k - 1]; 
         }
-        prev = move(cur);
+        prev.swap(cur);
     }
     return prev;
 }
 
-long long polyEval(const vector<long long>& coef, int b) {
-    long long res = 0;
-    long long powB = 1;
+int64_t polyEval(const vector<int64_t>& coef, int b) { 
+    int64_t res = 0;
+    int64_t powB = 1;
     for (size_t k = 0; k < coef.size(); ++k) {
         res += coef[k] * powB;
         powB *= b;
@@ -52,17 +53,19 @@ long long polyEval(const vector<long long>& coef, int b) {
     return res;
 }
 
-long long denPow(int b, int a) {
-    long long d = 1;
-    for (int i = 0; i <= a; ++i) d *= (b - 1);
-    return d;
+int64_t denPow(int b, int a) { 
+    int64_t res = 1;
+    for (int i = 0; i <= a; ++i) {
+        res *= (b - 1);
+    }
+    return res;
 }
 
-pair<long long, long long> sum(int a, int b) {
-    vector<long long> coeff = euler(a);
-    long long poly = polyEval(coeff, b);
-    long long num = b * poly;
-    long long den = denPow(b, a);
-    long long g = gcd(num, den);
+pair<int64_t, int64_t> sum(int a, int b) { 
+    vector<int64_t> coeff = euler(a);
+    int64_t poly = polyEval(coeff, b);
+    int64_t num = b * poly;
+    int64_t den = denPow(b, a);
+    int64_t g = gcd(num, den);
     return {num / g, den / g};
 }
