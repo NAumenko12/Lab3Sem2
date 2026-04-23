@@ -1,35 +1,37 @@
 #include <iostream>
 #include <vector>
+#include <cstdint>
+
 using namespace std;
 
 void input(int &n, int &m, vector<int> &chisla);
-pair<int, long long> selectBestMove(int pos, int m, int lastMove, const vector<int> &chisla);
-void playGame(const vector<int> &chisla, int m, long long &pavel, long long &vika);
+pair<int, int64_t> selectBestMove(int pos, int m, int lastMove, const vector<int> &chisla);
+void playGame(const vector<int> &chisla, int m, int64_t &pavel, int64_t &vika);
 
 int main() {
     int n{};
     int m{};
+    int64_t pavel{};
+    int64_t vika{};
     vector<int> chisla;
     input(n, m, chisla);
-    long long pavel, vika;
     playGame(chisla, m, pavel, vika);
     cout << (pavel > vika ? 1 : 0) << endl;
     return 0;
 }
 
 void input(int &n, int &m, vector<int> &chisla) {
-    cin >> n;
-    cin >> m;
-    vector<int> chisla(n);
-    for (int i = 0; i < n; ++i) {
+    cin >> n >> m;
+    chisla.resize(n);
+    for (int i = 0; i < n; ++i){
         cin >> chisla[i];
     }
 }
 
-pair<int, long long> selectBestMove(int pos, int m, int lastMove, const vector<int> &chisla) {
+pair<int, int64_t> selectBestMove(int pos, int m, int lastMove, const vector<int> &chisla) {
     int bestK = 1;
-    long long bestSum = -1e18;        
-    long long currentSum = 0;
+    int64_t bestSum = INT64_MIN;
+    int64_t currentSum = 0;
     for (int k = 1; k <= m && pos + k <= (int)chisla.size(); ++k) {
         if (k == lastMove){
             continue;
@@ -43,17 +45,21 @@ pair<int, long long> selectBestMove(int pos, int m, int lastMove, const vector<i
     return {bestK, bestSum};
 }
 
-void playGame(const vector<int> &chisla, int m, long long &pavel, long long &vika) {
+void playGame(const vector<int> &chisla, int m, int64_t &pavel, int64_t &vika) {
     int pos = 0;
     int lastMove = -1;
     bool isPavel = true;
     pavel = vika = 0;
     while (pos < (int)chisla.size()) {
-        auto [bestK, bestSum] = selectBestMove(pos, m, lastMove, chisla);
-        if (isPavel)
+        pair<int, int64_t> moveResult = selectBestMove(pos, m, lastMove, chisla);
+        int bestK = moveResult.first;
+        int64_t bestSum = moveResult.second;
+        if (isPavel){
             pavel += bestSum;
-        else
+        } 
+        else{
             vika += bestSum;
+        } 
         pos += bestK;
         lastMove = bestK;
         isPavel = !isPavel;

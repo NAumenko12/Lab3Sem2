@@ -25,7 +25,6 @@ func selectBestMove(pos, m, lastMove int, chisla []int) (bestK int, bestSum int6
 	bestK = 1
 	bestSum = -1 << 62
 	currentSum := int64(0)
-
 	for k := 1; k <= m && pos+k <= len(chisla); k++ {
 		if k == lastMove {
 			continue
